@@ -1,0 +1,59 @@
+name: Deploy (main)
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      
+      - name: setup mkdocs and plugins
+        run: pip install -r requirements.txt
+      
+      - name: build
+        run: mkdocs build -d _site
+
+      - name: upload
+        uses: actions/upload-pages-artifact@v4
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: publish
+        id: deployment
+        uses: actions/deploy-pages@v4

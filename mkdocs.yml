@@ -1,0 +1,23 @@
+site_name: !ENV [SITE_NAME, "Docs Demo (Main)"]
+# site_url: !ENV SITE_URL
+copyright: AI Slopfest Bonanza Inc.
+
+theme:
+  name: material
+  features:
+    - navigation.indexes 
+    - navigation.sections
+    - navigation.tabs
+    - navigaton.expand
+    - navigaton.tracking
+    - search.share
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+    - toc.integrate
+    - toc.follow
+    - tabs.sticky
+    - footer.sticky
+
+  
