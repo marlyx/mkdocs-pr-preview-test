@@ -67,3 +67,24 @@ jobs:
           path: "_site"
           retention-days: 2
           overwrite: true
+
+  deploy:
+    needs: build
+
+    permissions:
+      contents: read
+      actions: read
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download
+      uses: actions/download-artifact@v5
+      with:
+        path: previews
+        pattern: preview-pr-*
+        merge-multiple: false
+
+    - name: Show
+      run: |
+        ls -lr
+
