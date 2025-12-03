@@ -1,0 +1,43 @@
+name: Generate Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: preview-pr-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:  
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      
+      - name: setup mkdocs and plugins
+        run: pip install -r requirements.txt
+      
+      - name: build
+        run: mkdocs build -d _site
+
+      - name: upload
+        id: upload
+        uses: actions/upload-pages-artifact@v4
+        with:
+          name: "preview-pr-${{ github.event.number }}"
