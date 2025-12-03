@@ -81,6 +81,7 @@ jobs:
       uses: actions/download-artifact@v6
       with:
         github-token: ${{ github.token }}
+        repository: ${{ github.repository }}
         path: previews
         pattern: preview-pr-*
         merge-multiple: false
