@@ -3,6 +3,10 @@ name: Deploy (main)
 on:
   push:
     branches: ["main"]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "requirements.txt"
 
   workflow_dispatch:
 
@@ -31,10 +35,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      
+
       - name: setup mkdocs and plugins
         run: pip install -r requirements.txt
-      
+
       - name: build
         run: mkdocs build -d _site
 
@@ -47,7 +51,7 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
