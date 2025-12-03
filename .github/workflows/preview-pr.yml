@@ -42,5 +42,5 @@ jobs:
         with:
           name: "preview-pr-${{ github.event.number }}"
           path: "_site"
-          retention-days: 10
+          retention-days: 2
           overwrite: true
