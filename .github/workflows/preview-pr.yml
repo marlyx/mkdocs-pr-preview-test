@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:  
+  build:
     permissions:
       contents: read
 
@@ -29,15 +29,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      
+
       - name: setup mkdocs and plugins
         run: pip install -r requirements.txt
-      
+
       - name: build
         run: mkdocs build -d _site
 
       - name: upload
         id: upload
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: "preview-pr-${{ github.event.number }}"
+          path: "_site"
+          retention-days: 10
+          overwrite: true
